@@ -1,21 +1,32 @@
-import { createServer } from "http";
-import { parse } from "url";
 import next from "next";
+import express from "express";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev, turbo: true });
+// without getRequestHandler() it will throw error
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  createServer((req, res) => {
-    const parsedUrl = parse(req.url!, true);
-    handle(req, res, parsedUrl);
-  }).listen(port);
+  const server = express();
 
-  console.log(
-    `> Server listening at http://localhost:${port} as ${
-      dev ? "development" : process.env.NODE_ENV
-    }`
-  );
+  // express config
+  server.use(bodyParser.urlencoded({ extended: true }));
+  server.use(bodyParser.json());
+  server.use(cookieParser());
+
+  server.use(express.json());
+  server.use(express.urlencoded({ extended: true }));
+  server.use("/api/test", (req, res) => {
+    res.json({ message: "Hello from the API!" });
+  });
+  server.use((req, res) => {
+    return handle(req, res);
+  });
+
+  server.listen(port, () => {
+    console.log("server is running on port 3000");
+  });
 });
