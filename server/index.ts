@@ -2,12 +2,28 @@ import next from "next";
 import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
 
+import * as config from "./config/index";
+
+const { databaseConfig } = config;
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev, turbo: true });
 // without getRequestHandler() it will throw error
 const handle = app.getRequestHandler();
+
+const mongoHost = `mongodb://${databaseConfig.username}:${databaseConfig.password}@${databaseConfig.host}:${databaseConfig.port}/${databaseConfig.database}`;
+mongoose
+  .connect(mongoHost, {
+    authSource: "admin",
+  })
+  .then(() => {
+    console.log("connect established: ", mongoHost);
+  })
+  .catch((err) => {
+    console.log("connect error: ", err);
+  });
 
 app.prepare().then(() => {
   const server = express();
