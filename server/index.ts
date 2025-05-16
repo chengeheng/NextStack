@@ -3,7 +3,9 @@ import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
+import session from "express-session";
 
+import passport from "./middlewares/passport-local";
 import * as config from "./config/index";
 
 const { databaseConfig } = config;
@@ -32,6 +34,23 @@ app.prepare().then(() => {
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());
   server.use(cookieParser());
+
+  server.use(
+    session({
+      secret: config.JWT_KEY,
+      resave: false,
+      saveUninitialized: true,
+    })
+  );
+
+  // passport
+  server.use(passport.initialize());
+  // server.use(passport.session());
+
+  server.use((req, res, next) => {
+    req.passport = passport;
+    next();
+  });
 
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));

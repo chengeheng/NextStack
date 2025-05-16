@@ -6,7 +6,8 @@
     "target": "ES2017",
     "isolatedModules": false,
     "noEmit": false,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "typeRoots": ["./types"]
   },
   "include": ["server/**/*.ts"],
   "exclude": ["server/**/__test__/"]
