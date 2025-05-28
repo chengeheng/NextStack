@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <SidebarProvider>
           <AppSidebar />
-          <main>
+          <main className="flex flex-col flex-1 100svh p-[20px]">
             <SidebarTrigger />
             {children}
           </main>

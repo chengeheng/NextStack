@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-const Main = () => {
+const Main = ({ label, desc }: { label: string; desc: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const makeInstance = (
     scene: THREE.Scene,
@@ -104,14 +104,10 @@ const Main = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Three.js Basic Demo</h1>
-      <canvas
-        width={300}
-        height={200}
-        ref={canvasRef}
-        style={{ width: "1000px", height: "800px" }}
-      ></canvas>
+    <div className="w-full h-full flex flex-col gap-[16px]">
+      <h1>{label}</h1>
+      <p className="text-muted-foreground whitespace-pre">{desc}</p>
+      <canvas ref={canvasRef} className="w-full"></canvas>
     </div>
   );
 };

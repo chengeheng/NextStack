@@ -1,18 +1,28 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FirstDemoPage from "@/components/client/three/firstDemo";
+import CoreComponents from "@/components/client/three/coreComponents";
 
-const Main = ({ children }: { children: React.ReactNode }) => {
+type DemoComponentProps = {
+  label: string;
+  desc: string;
+};
+const Main = () => {
   const demos = [
     {
       key: "First Demo",
       label: "First Demo",
-      cmp: <FirstDemoPage />,
       desc: "第一个 Three.js 示例，创建一个简单的立方体。",
+      Cmp: FirstDemoPage as React.ComponentType<DemoComponentProps>,
     },
     {
       key: "Core Components",
       label: "Core Components",
-      desc: "场景（Scene）：所有物体的容器。相机（Camera）：透视相机（PerspectiveCamera）和正交相机（OrthographicCamera）。渲染器（Renderer）：WebGLRenderer 是核心。",
+      desc: `
+        场景（Scene）：所有物体的容器。
+        相机（Camera）：透视相机（PerspectiveCamera）和正交相机（OrthographicCamera）。
+        渲染器（Renderer）：WebGLRenderer 是核心。
+      `,
+      Cmp: CoreComponents as React.ComponentType<DemoComponentProps>,
     },
     {
       key: "Light",
@@ -67,21 +77,26 @@ const Main = ({ children }: { children: React.ReactNode }) => {
   ];
 
   return (
-    <Tabs defaultValue="basic" className="w-[400px]">
+    <Tabs defaultValue="First Demo" className="w-full h-full">
       <TabsList>
         {demos
-          .filter((i) => i.cmp)
+          .filter((i) => i.Cmp)
           .map((demo) => (
             <TabsTrigger key={demo.key} value={demo.key}>
               {demo.label}
             </TabsTrigger>
           ))}
       </TabsList>
-      {demos.map((demo) => (
-        <TabsContent key={demo.key} value={demo.key}>
-          {demo.cmp}
-        </TabsContent>
-      ))}
+      {demos.map((demo) => {
+        const { Cmp } = demo;
+        return (
+          <TabsContent key={demo.key} value={demo.key} className="w-full">
+            <div className="w-full h-full">
+              {Cmp ? <Cmp label={demo.label} desc={demo.desc} /> : ""}
+            </div>
+          </TabsContent>
+        );
+      })}
     </Tabs>
   );
 };
