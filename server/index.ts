@@ -8,6 +8,8 @@ import session from "express-session";
 import passport from "./middlewares/passport-local";
 import * as config from "./config/index";
 
+import authRouter from "./routers/auth";
+
 const { databaseConfig } = config;
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
@@ -54,9 +56,7 @@ app.prepare().then(() => {
 
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
-  server.use("/api/test", (req, res) => {
-    res.json({ message: "Hello from the API!" });
-  });
+  server.use("/api", authRouter);
   server.use((req, res) => {
     return handle(req, res);
   });

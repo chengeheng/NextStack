@@ -20,7 +20,7 @@ const items = [
   },
   {
     title: "Setting",
-    url: "/setting",
+    url: "/admin/setting",
     icon: Settings,
   },
 ];

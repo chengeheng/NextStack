@@ -1,7 +1,8 @@
-import * as config from "../config";
-import User from "../models/user";
+import * as config from "@/server/config";
+import User from "@/server/models/user";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import passport from "passport";
+import { UserRoleType } from "@/types/server/user";
 
 const opts = {
   // Prepare the extractor from the header.
@@ -28,9 +29,9 @@ passport.use(
   new JwtStrategy(opts, async function (req, jwt_payload, done) {
     try {
       const userInfo = await User.findOne({
-        user_uuid: jwt_payload.user_uuid,
+        id: jwt_payload.id,
       });
-      if (userInfo && userInfo.role > 0) {
+      if (userInfo && userInfo.role !== UserRoleType.LOCKED) {
         done(null, userInfo);
       } else {
         done(null, false);
