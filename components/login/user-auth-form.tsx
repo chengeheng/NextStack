@@ -1,24 +1,42 @@
 "use client";
 
 import * as React from "react";
+import useSWRMutation from "swr/mutation";
+import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { loginFetcher } from "@/client/apis/login";
+
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const router = useRouter();
+  const { trigger, isMutating } = useSWRMutation("/api/login", loginFetcher, {
+    onSuccess: (data) => {
+      console.log("Login successful:", data);
+      // Handle successful login here, e.g., redirect or show a success message
+    },
+    onError: (error) => {
+      console.error("Login failed:", error);
+      // Handle login error here, e.g., show an error message
+    },
+  });
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    trigger({
+      username,
+      password,
+    }).then(() => {
+      // Redirect to the home page or another page after successful login
+      router.push("/admin");
+    });
   }
 
   return (
@@ -36,7 +54,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              disabled={isMutating}
             />
             <Label className="sr-only" htmlFor="email">
               Email
@@ -48,12 +68,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isMutating}
             />
           </div>
-          <Button disabled={isLoading}>
+          <Button disabled={isMutating}>
             {
-              isLoading && "Loading..." // You can replace this with an icon if needed
+              isMutating && "Loading..." // You can replace this with an icon if needed
             }
             Sign In
           </Button>
@@ -69,8 +91,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading
+      <Button variant="outline" type="button" disabled={isMutating}>
+        {isMutating
           ? //   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             "Loading..." // You can replace this with an icon if needed
           : //   <Icons.gitHub className="mr-2 h-4 w-4" />
