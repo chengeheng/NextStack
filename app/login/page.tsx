@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { UserAuthForm } from "@/components/login/user-auth-form";
+import LoginForm from "@/app/login/loginForm";
 
 export const metadata: Metadata = {
   title: "Authentication",
@@ -69,8 +69,8 @@ export default function AuthenticationPage() {
                 Enter your account below to Login
               </p> */}
             </div>
-            <UserAuthForm />
-            <p className="px-8 text-center text-sm text-muted-foreground">
+            <LoginForm />
+            {/* <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
                 href="/terms"
@@ -86,7 +86,7 @@ export default function AuthenticationPage() {
                 Privacy Policy
               </Link>
               .
-            </p>
+            </p> */}
           </div>
         </div>
       </div>

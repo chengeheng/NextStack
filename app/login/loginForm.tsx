@@ -11,9 +11,9 @@ import { Label } from "@/components/ui/label";
 
 import { loginFetcher } from "@/client/apis/login";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+function LoginForm({ className, ...props }: LoginFormProps) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const router = useRouter();
@@ -102,3 +102,5 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     </div>
   );
 }
+
+export default LoginForm;
