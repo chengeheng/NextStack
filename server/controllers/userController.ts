@@ -41,7 +41,9 @@ export const userController = {
         return;
       }
 
-      if (!Object.values(UserRoleType).includes(role)) {
+      // Convert role to number if it's a string
+      const roleNumber = Number(role);
+      if (!Object.values(UserRoleType).includes(roleNumber)) {
         res.error(400, "Invalid role");
         return;
       }
@@ -59,7 +61,7 @@ export const userController = {
         name,
         password: hashedPassword,
         email,
-        role,
+        role: roleNumber, // Use the converted number
       });
 
       await user.save();
@@ -67,7 +69,7 @@ export const userController = {
       delete userResponse.password;
       res.success(userResponse);
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error creating user:", error.toString());
       res.error(500, "Failed to create user");
     }
   },

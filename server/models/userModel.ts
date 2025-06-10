@@ -22,7 +22,12 @@ const userSchema = new Schema<IUser>(
     },
     role: {
       type: Number,
-      enum: Object.values(UserRoleType),
+      enum: [
+        UserRoleType.LOCKED,
+        UserRoleType.USER,
+        UserRoleType.ADMIN,
+        UserRoleType.SUPERADMIN,
+      ],
       default: UserRoleType.USER,
     },
     createdAt: {
