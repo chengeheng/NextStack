@@ -1,7 +1,6 @@
 import express from "express";
 
-import authController from "@/server/controllers/authController";
-import authMiddleware from "@/server/middlewares/auth-middleware";
+import authController from "@/server/controllers/loginController";
 
 const router = express.Router();
 
@@ -14,7 +13,6 @@ const router = express.Router();
  */
 
 // 这里可以添加具体的路由处理逻辑，例如登录、注册等
-router.get("/user/list", authMiddleware, authController.getUserList);
 router.post("/login", authController.login);
 
 export default router;

@@ -6,9 +6,11 @@ import mongoose from "mongoose";
 import session from "express-session";
 
 import passport from "./middlewares/passport-local";
+import { responseHandler } from "./middlewares/responseHandler";
 import * as config from "./config/index";
 
 import authRouter from "./routers/auth";
+import userRouter from "./routers/userRouter";
 
 const { databaseConfig } = config;
 const port = parseInt(process.env.PORT || "3000", 10);
@@ -36,7 +38,6 @@ app.prepare().then(() => {
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());
   server.use(cookieParser());
-
   server.use(
     session({
       secret: config.JWT_KEY,
@@ -53,10 +54,12 @@ app.prepare().then(() => {
     req.passport = passport;
     next();
   });
+  server.use(responseHandler);
 
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
   server.use("/api", authRouter);
+  server.use("/api", userRouter);
   server.use((req, res) => {
     return handle(req, res);
   });

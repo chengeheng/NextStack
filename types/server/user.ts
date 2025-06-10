@@ -12,10 +12,9 @@ export enum UserRoleType {
 export interface UserType {
   id: string;
   name: string;
-  passwword: string;
+  password: string;
   email?: string;
   role: UserRoleType;
   createdAt: number;
   updatedAt: number;
-  [key: string]: any; // Allow additional properties
 }

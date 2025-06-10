@@ -1,10 +1,9 @@
-import userService from "@/server/services/userService";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { get } from "lodash";
 import { v4 } from "uuid";
 
-import User from "../models/user";
+import { User } from "../models/userModel";
 import * as config from "../config/index";
 
 const authController = {
@@ -25,20 +24,11 @@ const authController = {
       }
     );
   },
-  async getUserList(req: Request, res: Response) {
-    try {
-      const users = await userService.getUserList();
-      res.status(200).json({ code: 0, data: users });
-    } catch (error) {
-      console.error("Error fetching user list:", error);
-      res.status(500).json({ message: "Failed to fetch user list" });
-    }
-  },
 
   async login(req: Request, res: Response) {
     try {
       const { username, password } = req.body;
-      const userInfo = await User.findOne({ username: username });
+      const userInfo = await User.findOne({ name: username });
       if (userInfo) {
         if (userInfo.password === password) {
           const token = authController.GenerateToken(userInfo);
@@ -47,12 +37,12 @@ const authController = {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           });
-          res.send({ code: 0, token: "Bearer " + token });
+          res.success({ token: "Bearer " + token });
         } else {
-          res.send({ code: 1, message: "密码错误！" });
+          res.error(1, "密码错误！");
         }
       } else {
-        res.send({ code: 1, message: "该用户不存在" });
+        res.error(1, "该用户不存在");
       }
     } catch (err) {
       res.send({
