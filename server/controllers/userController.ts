@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UserRoleType } from "../../types/server/user";
-import { hash } from "bcryptjs";
 import { User } from "../models/userModel";
+import { PasswordUtil } from "../utils/password";
 
 export const userController = {
   // Get all users
@@ -10,14 +10,7 @@ export const userController = {
       const users = await User.find({}, { password: 0 }).sort({
         createdAt: -1,
       });
-      const usersResponse = users.map((user) => {
-        const userResponse = user.toObject();
-        userResponse.id = userResponse._id.toString();
-        delete userResponse.password;
-        delete userResponse._id;
-        delete userResponse.__v;
-        return userResponse;
-      });
+      const usersResponse = users.map((user) => user.toJSON());
       res.success(usersResponse);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -32,6 +25,12 @@ export const userController = {
 
       if (!name || !password || !email || !role) {
         res.error(400, "Missing required fields");
+        return;
+      }
+
+      // 验证密码强度
+      if (!PasswordUtil.validatePasswordStrength(password)) {
+        res.error(400, "密码必须至少8位，包含字母和数字");
         return;
       }
 
@@ -56,20 +55,20 @@ export const userController = {
         return;
       }
 
-      const hashedPassword = await hash(password, 10);
+      // 加密密码
+      const hashedPassword = await PasswordUtil.encrypt(password);
       const user = new User({
         name,
         password: hashedPassword,
         email,
-        role: roleNumber, // Use the converted number
+        role: roleNumber,
       });
 
       await user.save();
-      const userResponse = user.toObject();
-      delete userResponse.password;
+      const userResponse = user.toJSON();
       res.success(userResponse);
     } catch (error) {
-      console.error("Error creating user:", error.toString());
+      console.error("Error creating user:", error);
       res.error(500, "Failed to create user");
     }
   },
@@ -96,8 +95,7 @@ export const userController = {
       if (role) user.role = role;
 
       await user.save();
-      const userResponse = user.toObject();
-      delete userResponse.password;
+      const userResponse = user.toJSON();
       res.success(userResponse);
     } catch (error) {
       console.error("Error updating user:", error);
@@ -126,6 +124,17 @@ export const userController = {
     } catch (error) {
       console.error("Error deleting user:", error);
       res.error(500, "Failed to delete user");
+    }
+  },
+  // 根据id获取用户详情
+  getUserById: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const user = await User.findById(id);
+      res.success(user);
+    } catch (error) {
+      console.error("Error getting user by id:", error);
+      res.error(500, "Failed to get user by id");
     }
   },
 };

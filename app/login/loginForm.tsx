@@ -8,10 +8,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { hash, compare } from "bcryptjs";
 
 import { loginFetcher } from "@/client/apis/login";
 
-interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+type LoginFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 function LoginForm({ className, ...props }: LoginFormProps) {
   const [username, setUsername] = React.useState("");
@@ -22,7 +23,7 @@ function LoginForm({ className, ...props }: LoginFormProps) {
       console.log("Login successful:", data);
       // Handle successful login here, e.g., redirect or show a success message
     },
-    onError: (error) => {
+    onError: async (error) => {
       console.error("Login failed:", error);
       // Handle login error here, e.g., show an error message
     },
@@ -30,6 +31,11 @@ function LoginForm({ className, ...props }: LoginFormProps) {
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
+    console.log("password", password);
+    const formatedPassword = await hash(password, 10);
+    console.log("password", formatedPassword);
+    const isPasswordValid = await compare(formatedPassword, password);
+    console.log("isPasswordValid", isPasswordValid);
     trigger({
       username,
       password,

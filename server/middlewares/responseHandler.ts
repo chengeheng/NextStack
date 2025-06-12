@@ -8,9 +8,9 @@ interface ApiResponse<T = unknown> {
 
 // 创建统一的响应方法
 const createResponse = (res: Response) => {
-  const success = <T>(data: T): Response => {
+  const success = <T>(data: T, extraCode: number = 0): Response => {
     const response: ApiResponse<T> = {
-      code: 0,
+      code: extraCode,
       data,
     };
     return res.send(response);
@@ -61,27 +61,27 @@ export const responseHandler = (
   const originalSend = res.send;
 
   // 重写 send 方法
-  res.send = function (body: unknown): Response {
+  res.send = function (body: ApiResponse): Response {
     // 如果响应已经发送，直接返回
     if (res.headersSent) {
       return originalSend.call(this, body);
     }
 
     try {
-      // 构造标准响应格式
-      const response: ApiResponse = {
-        code: res.statusCode < 400 ? 0 : res.statusCode,
-        data: res.statusCode < 400 ? body : null,
-        message:
-          res.statusCode >= 400
-            ? typeof body === "string"
-              ? body
-              : "Operation failed"
-            : undefined,
-      };
+      // // 构造标准响应格式
+      // const response: ApiResponse = {
+      //   code: res.statusCode < 400 ? 0 : res.statusCode,
+      //   data: res.statusCode < 400 ? (body as ApiResponse<unknown>).data : null,
+      // };
+      // if (res.statusCode >= 400) {
+      //   response.message =
+      //     typeof body === "string"
+      //       ? body
+      //       : (body as ApiResponse).message || "Operation failed";
+      // }
 
       // 使用原始的 send 方法发送格式化后的响应
-      return originalSend.call(this, JSON.stringify(response));
+      return originalSend.call(this, JSON.stringify(body));
     } catch (error) {
       console.error("Response serialization error:", req.path);
       console.error("Response serialization error:", error);

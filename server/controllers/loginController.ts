@@ -5,6 +5,7 @@ import { v4 } from "uuid";
 
 import { User } from "../models/userModel";
 import * as config from "../config/index";
+import { PasswordUtil } from "../utils/password";
 
 const authController = {
   GenerateToken: (user) => {
@@ -30,7 +31,12 @@ const authController = {
       const { username, password } = req.body;
       const userInfo = await User.findOne({ name: username });
       if (userInfo) {
-        if (userInfo.password === password) {
+        // 验证密码
+        const isPasswordValid = await PasswordUtil.verify(
+          password,
+          userInfo.password
+        );
+        if (isPasswordValid) {
           const token = authController.GenerateToken(userInfo);
           await res.cookie("authorization", token, {
             expires: new Date(Date.now() + config.JWT_EXPIRY),
@@ -45,11 +51,7 @@ const authController = {
         res.error(1, "该用户不存在");
       }
     } catch (err) {
-      res.send({
-        code: 0,
-        message: "登录失败! 请稍后再试",
-        err,
-      });
+      res.error(1, "登录失败! 请稍后再试", err);
     }
   },
 };

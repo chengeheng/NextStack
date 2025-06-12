@@ -2,36 +2,37 @@ import next from "next";
 import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import mongoose from "mongoose";
 import session from "express-session";
 
 import passport from "./middlewares/passport-local";
 import { responseHandler } from "./middlewares/responseHandler";
 import * as config from "./config/index";
+import { DBUtil } from "./utils/db";
 
 import authRouter from "./routers/auth";
 import userRouter from "./routers/userRouter";
 
-const { databaseConfig } = config;
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev, turbo: true });
 // without getRequestHandler() it will throw error
 const handle = app.getRequestHandler();
 
-const mongoHost = `mongodb://${databaseConfig.username}:${databaseConfig.password}@${databaseConfig.host}:${databaseConfig.port}/${databaseConfig.database}`;
-mongoose
-  .connect(mongoHost, {
-    authSource: "admin",
-  })
-  .then(() => {
-    console.log("connect established: ", mongoHost);
-  })
-  .catch((err) => {
-    console.log("connect error: ", err);
-  });
+// 初始化数据库连接
+async function initializeDatabase() {
+  try {
+    const dbUtil = DBUtil.getInstance();
+    await dbUtil.connect();
+  } catch (error) {
+    console.error("Failed to initialize database:", error);
+    process.exit(1);
+  }
+}
 
-app.prepare().then(() => {
+app.prepare().then(async () => {
+  // 初始化数据库
+  await initializeDatabase();
+
   const server = express();
 
   // express config
