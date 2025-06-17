@@ -137,4 +137,15 @@ export const userController = {
       res.error(500, "Failed to get user by id");
     }
   },
+  // 获取当前登录用户信息
+  getCurrentUser: async (req: Request, res: Response): Promise<void> => {
+    console.log("userInfo: ", req.userInfo);
+    try {
+      const user = await User.findById(req.userInfo?.id);
+      res.success(user);
+    } catch (error) {
+      console.error("Error getting current user:", error);
+      res.error(500, "Failed to get current user");
+    }
+  },
 };
