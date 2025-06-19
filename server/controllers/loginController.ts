@@ -54,6 +54,19 @@ const authController = {
       res.error(1, "登录失败! 请稍后再试", err);
     }
   },
+
+  async logout(req: Request, res: Response) {
+    try {
+      // 清除authorization cookie
+      res.clearCookie("authorization", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      });
+      res.success({ message: "退出登录成功" });
+    } catch (err) {
+      res.error(1, "退出登录失败! 请稍后再试", err);
+    }
+  },
 };
 
 export default authController;

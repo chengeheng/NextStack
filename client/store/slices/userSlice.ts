@@ -43,6 +43,7 @@ const userSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(fetchCurrentUser.rejected, (state, action) => {
+        console.log("action fetchCurrentUser.rejected", action);
         state.loading = false;
         state.error = action.error.message || "Failed to fetch user profile";
       });

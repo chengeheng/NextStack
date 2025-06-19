@@ -5,7 +5,7 @@ import { UserType } from "@/types/server/user";
 // 获取用户列表
 export const useUsers = () => {
   const { data, error, mutate } = useSWR<UserType[]>(
-    "/api/system/users",
+    "/system/users",
     async (url) => {
       const response = await request<null, UserType[]>({
         url,
@@ -31,7 +31,7 @@ export const createUser = async (userData: {
   role: number;
 }) => {
   const response = await request<typeof userData, UserType>({
-    url: "/api/system/user",
+    url: "/system/user",
     method: "POST",
     data: userData,
   });
@@ -48,7 +48,7 @@ export const updateUser = async (
   }
 ) => {
   const response = await request<typeof userData, UserType>({
-    url: `/api/system/user/${id}`,
+    url: `/system/user/${id}`,
     method: "PUT",
     data: userData,
   });
@@ -58,7 +58,7 @@ export const updateUser = async (
 // 删除用户
 export const deleteUser = async (id: string) => {
   const response = await request<null, null>({
-    url: `/api/system/user/${id}`,
+    url: `/system/user/${id}`,
     method: "DELETE",
   });
   return response.data;
@@ -67,7 +67,7 @@ export const deleteUser = async (id: string) => {
 // 根据id获取用户
 export const getUserById = async (id: string) => {
   const response = await request<null, UserType>({
-    url: `/api/system/user/${id}`,
+    url: `/system/user/${id}`,
     method: "GET",
   });
   // 修改toolkit中userSlice中用户的信息
@@ -77,7 +77,7 @@ export const getUserById = async (id: string) => {
 // 获取当前登录用户信息
 export const getCurrentUser = async () => {
   const response = await request<null, UserType>({
-    url: "/api/system/user/current",
+    url: "/system/user/current",
     method: "GET",
   });
   return response.data;

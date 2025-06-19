@@ -15,6 +15,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 // 创建 axios 实例
 const service = axios.create({
   timeout: 10000, // 请求超时时间
+  baseURL: "/api", // 添加基础URL
 } as CustomAxiosRequestConfig);
 
 // 请求队列
@@ -22,8 +23,8 @@ const pendingRequests = new Map();
 
 // 生成请求的唯一键
 const generateRequestKey = (config: AxiosRequestConfig) => {
-  const { url, method, params, data } = config;
-  return [url, method, JSON.stringify(params), JSON.stringify(data)].join("&");
+  const { url, method } = config;
+  return `${method?.toUpperCase()}-${url}`;
 };
 
 // 添加请求到队列

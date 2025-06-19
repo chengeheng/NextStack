@@ -139,7 +139,6 @@ export const userController = {
   },
   // 获取当前登录用户信息
   getCurrentUser: async (req: Request, res: Response): Promise<void> => {
-    console.log("userInfo: ", req.userInfo);
     try {
       const user = await User.findById(req.userInfo?.id);
       res.success(user);

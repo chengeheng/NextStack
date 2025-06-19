@@ -9,13 +9,13 @@ interface loginProps {
 }
 
 export const loginFetcher: MutationFetcher<
-  AxiosResponse<any>,
+  AxiosResponse<void>,
   string,
   loginProps
 > = (path, params) => {
   return request<loginProps, void>({
     method: "post",
-    url: "/api/login",
+    url: "/login",
     data: params.arg,
   });
 };

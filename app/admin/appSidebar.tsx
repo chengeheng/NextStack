@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { UserAvatar } from "@/app/admin/userAvatar";
 
 const examples = [
   {
@@ -14,13 +15,14 @@ const examples = [
   },
 ];
 
-interface ExamplesNavProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
+export function ExamplesNav({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   const pathname = usePathname();
 
   return (
-    <div className="relative">
+    <div className="relative flex items-center justify-between w-full">
       <ScrollArea className="max-w-[600px] lg:max-w-none">
         <div className={cn("flex items-center", className)} {...props}>
           <ExampleLink
@@ -37,6 +39,9 @@ export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
         </div>
         <ScrollBar orientation="horizontal" className="invisible" />
       </ScrollArea>
+      <div className="flex items-center">
+        <UserAvatar />
+      </div>
     </div>
   );
 }

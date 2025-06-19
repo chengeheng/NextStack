@@ -13,6 +13,7 @@ export interface UserType {
   id: string;
   name: string;
   password: string;
+  avatar?: string;
   email?: string;
   role: UserRoleType;
   createdAt: number;

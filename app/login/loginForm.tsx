@@ -3,12 +3,12 @@
 import * as React from "react";
 import useSWRMutation from "swr/mutation";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { hash, compare } from "bcryptjs";
 
 import { loginFetcher } from "@/client/apis/login";
 
@@ -31,11 +31,6 @@ function LoginForm({ className, ...props }: LoginFormProps) {
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    console.log("password", password);
-    const formatedPassword = await hash(password, 10);
-    console.log("password", formatedPassword);
-    const isPasswordValid = await compare(formatedPassword, password);
-    console.log("isPasswordValid", isPasswordValid);
     trigger({
       username,
       password,
@@ -81,7 +76,7 @@ function LoginForm({ className, ...props }: LoginFormProps) {
           </div>
           <Button disabled={isMutating}>
             {
-              isMutating && "Loading..." // You can replace this with an icon if needed
+              isMutating && <Loader /> // You can replace this with an icon if needed
             }
             Sign In
           </Button>
@@ -98,11 +93,6 @@ function LoginForm({ className, ...props }: LoginFormProps) {
         </div>
       </div>
       <Button variant="outline" type="button" disabled={isMutating}>
-        {isMutating
-          ? //   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            "Loading..." // You can replace this with an icon if needed
-          : //   <Icons.gitHub className="mr-2 h-4 w-4" />
-            "GitHub Icon Placeholder"}{" "}
         GitHub
       </Button>
     </div>

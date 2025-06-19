@@ -1,6 +1,7 @@
 import express from "express";
 
 import authController from "@/server/controllers/loginController";
+import authMiddleware from "@/server/middlewares/auth-middleware";
 
 const router = express.Router();
 
@@ -14,5 +15,8 @@ const router = express.Router();
 
 // 这里可以添加具体的路由处理逻辑，例如登录、注册等
 router.post("/login", authController.login);
+
+// 退出登录接口，需要登录验证
+router.post("/logout", authMiddleware, authController.logout);
 
 export default router;
