@@ -10,6 +10,9 @@ const authMiddleware = async (req: Request, res: Response, next) => {
   // if (verified) {
   //   next();
   // } else {
+
+  // 添加调试信息
+
   req.passport.authenticate("jwt", { session: false }, (err, user) => {
     if (err) return next(err);
     if (!user) {

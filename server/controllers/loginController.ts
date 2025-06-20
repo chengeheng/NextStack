@@ -11,9 +11,9 @@ const authController = {
   GenerateToken: (user) => {
     return jwt.sign(
       {
-        uuid: get(user, "uuid"),
-        username: get(user, "username"),
-        userRole: get(user, "role"),
+        id: get(user, "id"),
+        name: get(user, "name"),
+        role: get(user, "role"),
       },
       config.JWT_KEY,
       {
@@ -30,6 +30,7 @@ const authController = {
     try {
       const { username, password } = req.body;
       const userInfo = await User.findOne({ name: username });
+
       if (userInfo) {
         // 验证密码
         const isPasswordValid = await PasswordUtil.verify(

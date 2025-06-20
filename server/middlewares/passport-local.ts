@@ -28,9 +28,7 @@ const opts = {
 passport.use(
   new JwtStrategy(opts, async function (req, jwt_payload, done) {
     try {
-      const userInfo = await User.findOne({
-        id: jwt_payload.id,
-      });
+      const userInfo = await User.findById(jwt_payload.id);
       if (userInfo && userInfo.role !== UserRoleType.LOCKED) {
         done(null, userInfo);
       } else {
