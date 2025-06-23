@@ -11,6 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Textarea } from "../../../components/ui/textarea";
 import { RoomType } from "@/types/chat";
 import { useAppDispatch } from "@/client/store/hooks";
@@ -51,12 +58,12 @@ const CreateRoomDialog: React.FC<CreateRoomDialogProps> = ({
     }
   };
 
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-lg font-semibold mb-4">创建新房间</h2>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>创建新房间</DialogTitle>
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -107,7 +114,7 @@ const CreateRoomDialog: React.FC<CreateRoomDialogProps> = ({
             />
           </div>
 
-          <div className="flex justify-end space-x-2 pt-4">
+          <DialogFooter>
             <Button
               type="button"
               variant="outline"
@@ -118,10 +125,10 @@ const CreateRoomDialog: React.FC<CreateRoomDialogProps> = ({
             <Button type="submit" disabled={!formData.name.trim()}>
               创建
             </Button>
-          </div>
+          </DialogFooter>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

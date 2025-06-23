@@ -5,12 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageCircle, Send, Users, MoreVertical } from "lucide-react";
+import { MessageCircle, Send, MoreVertical } from "lucide-react";
 import { useChat } from "@/client/hooks/useChat";
+import { useAppSelector } from "@/client/store/hooks";
+import { IMessage } from "@/types/chat";
+import MembersSheet from "./membersSheet";
 
 const ChatArea: React.FC = () => {
   const { currentRoom, messages, typingUsers, sendMessage, handleTyping } =
     useChat();
+  const { user } = useAppSelector((state) => state.user);
   const [messageInput, setMessageInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -45,6 +49,11 @@ const ChatArea: React.FC = () => {
     }
   };
 
+  // 判断消息是否为自己发送的
+  const isOwnMessage = (message: IMessage) => {
+    return message.senderId === user?.id;
+  };
+
   return (
     <div className="flex-1 flex flex-col">
       {currentRoom ? (
@@ -67,9 +76,7 @@ const ChatArea: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <Button size="sm" variant="ghost">
-                  <Users className="h-4 w-4" />
-                </Button>
+                <MembersSheet room={currentRoom} />
                 <Button size="sm" variant="ghost">
                   <MoreVertical className="h-4 w-4" />
                 </Button>
@@ -80,29 +87,47 @@ const ChatArea: React.FC = () => {
           {/* 消息列表 */}
           <ScrollArea className="flex-1 p-4">
             <div className="space-y-4">
-              {messages.map((message) => (
-                <div key={message.id} className="flex items-start space-x-3">
-                  <Avatar className="h-8 w-8 mt-1">
-                    <AvatarImage src={message.senderAvatar} />
-                    <AvatarFallback>
-                      {message.senderName.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium">
-                        {message.senderName}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {formatTime(message.createdAt)}
-                      </span>
-                    </div>
-                    <div className="mt-1 text-sm text-gray-900">
-                      {message.content}
+              {messages.map((message) => {
+                const ownMessage = isOwnMessage(message);
+                return (
+                  <div
+                    key={message.id}
+                    className={`flex items-start space-x-3 ${
+                      ownMessage ? "flex-row-reverse space-x-reverse" : ""
+                    }`}
+                  >
+                    <Avatar className="h-8 w-8 mt-1">
+                      <AvatarImage src={message.senderAvatar} />
+                      <AvatarFallback>
+                        {message.senderName.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className={`flex-1 ${ownMessage ? "text-right" : ""}`}>
+                      <div
+                        className={`flex items-center space-x-2 ${
+                          ownMessage ? "justify-end" : ""
+                        }`}
+                      >
+                        <span className="text-sm font-medium">
+                          {message.senderName}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {formatTime(message.createdAt)}
+                        </span>
+                      </div>
+                      <div
+                        className={`mt-1 text-sm text-gray-900 ${
+                          ownMessage
+                            ? "bg-blue-500 text-white rounded-lg rounded-tr-none px-3 py-2 inline-block"
+                            : "bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 inline-block"
+                        }`}
+                      >
+                        {message.content}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
               {/* 输入状态提示 */}
               {typingUsers.length > 0 && (

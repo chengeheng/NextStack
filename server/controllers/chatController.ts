@@ -320,4 +320,68 @@ export const chatController = {
       res.error(500, "Failed to leave room");
     }
   },
+
+  // 邀请用户到房间
+  async inviteUsers(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = (req as RequestWithUser).userInfo.id;
+      const { roomId } = req.params;
+      const { userIds }: { userIds: string[] } = req.body;
+
+      if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+        res.error(400, "User IDs are required");
+        return;
+      }
+
+      const room = await Room.findById(roomId);
+      if (!room) {
+        res.error(404, "Room not found");
+        return;
+      }
+
+      // 检查当前用户是否是群主
+      if (room.ownerId !== userId) {
+        res.error(403, "Only room owner can invite users");
+        return;
+      }
+
+      // 获取要邀请的用户信息
+      const users = await User.find({ _id: { $in: userIds } });
+      if (users.length === 0) {
+        res.error(404, "No valid users found");
+        return;
+      }
+
+      // 检查用户是否已经在房间中
+      const existingMemberIds = room.members.map((member) => member.userId);
+      const newMembers = users
+        .filter((user) => !existingMemberIds.includes(user._id.toString()))
+        .map((user) => ({
+          userId: user._id.toString(),
+          username: user.name,
+          avatar: user.avatar,
+          role: UserRole.MEMBER,
+          joinedAt: Date.now(),
+          lastSeenAt: Date.now(),
+          isOnline: false,
+        }));
+
+      if (newMembers.length === 0) {
+        res.error(400, "All users are already in the room");
+        return;
+      }
+
+      // 添加新成员到房间
+      room.members.push(...newMembers);
+      await room.save();
+
+      res.success({
+        message: `Successfully invited ${newMembers.length} users`,
+        invitedUsers: newMembers,
+      });
+    } catch (error) {
+      console.error("Error inviting users:", error);
+      res.error(500, "Failed to invite users");
+    }
+  },
 };

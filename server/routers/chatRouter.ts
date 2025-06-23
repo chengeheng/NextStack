@@ -12,6 +12,7 @@ router.get("/rooms", chatController.getUserRooms);
 router.post("/rooms/create", chatController.createRoom);
 router.post("/rooms/join", chatController.joinRoom);
 router.delete("/rooms/:roomId/leave", chatController.leaveRoom);
+router.post("/rooms/:roomId/invite", chatController.inviteUsers);
 
 // 消息相关路由
 router.get("/rooms/:roomId/messages", chatController.getRoomMessages);
