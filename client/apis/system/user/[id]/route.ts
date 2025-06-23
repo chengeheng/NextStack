@@ -1,6 +1,6 @@
 // TODO: need to implement the actual database implementation
 import { NextResponse } from "next/server";
-import { UserType, UserRoleType } from "@/types/server/user";
+import { UserType, UserRoleType } from "@/types/user";
 
 // Mock database - replace with actual database implementation
 const users: UserType[] = [];

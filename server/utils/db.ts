@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { User } from "../models/userModel";
-import { UserRoleType } from "../../types/server/user";
+import { UserRoleType } from "../../types/user";
 import { PasswordUtil } from "./password";
 import * as config from "../config/index";
 

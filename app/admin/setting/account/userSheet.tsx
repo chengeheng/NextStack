@@ -15,7 +15,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { UserType, UserRoleType } from "@/types/server/user";
+import { UserType, UserRoleType } from "@/types/user";
 import { createUser, updateUser } from "@/client/apis/system/user";
 import { toast } from "sonner";
 

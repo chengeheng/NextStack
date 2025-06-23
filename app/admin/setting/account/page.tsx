@@ -5,7 +5,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
-import { UserType, UserRoleType } from "@/types/server/user";
+import { UserType, UserRoleType } from "@/types/user";
 import { useUsers, deleteUser } from "@/client/apis/system/user";
 import { toast } from "sonner";
 import { UserSheet } from "./userSheet";

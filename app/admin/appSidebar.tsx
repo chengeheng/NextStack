@@ -13,6 +13,11 @@ const examples = [
     href: "/admin/setting",
     hidden: false,
   },
+  {
+    name: "Chat",
+    href: "/admin/chat",
+    hidden: false,
+  },
 ];
 
 export function ExamplesNav({

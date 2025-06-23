@@ -25,7 +25,7 @@ export function AdminLayoutClient({ children }: AdminLayoutClientProps) {
     <main className="w-full flex flex-1 flex-col items-center">
       <div className="w-full flex flex-col items-center border-grid border-b">
         <div className="w-full max-w-[1400px]">
-          <div className="container p-6">
+          <div className="w-full p-6">
             <ExamplesNav />
           </div>
         </div>

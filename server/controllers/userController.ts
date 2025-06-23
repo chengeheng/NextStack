@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserRoleType } from "../../types/server/user";
+import { UserRoleType } from "../../types/user";
 import { User } from "../models/userModel";
 import { PasswordUtil } from "../utils/password";
 

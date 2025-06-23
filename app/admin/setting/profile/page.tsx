@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/client/store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { UserRoleType } from "@/types/server/user";
+import { UserRoleType } from "@/types/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "lucide-react";
 

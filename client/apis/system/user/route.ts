@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { UserType, UserRoleType } from "@/types/server/user";
+import { UserType, UserRoleType } from "@/types/user";
 import { hash } from "bcryptjs";
 
 // Mock database - replace with actual database implementation

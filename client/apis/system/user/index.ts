@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import request from "@/client/utils/request";
-import { UserType } from "@/types/server/user";
+import { UserType } from "@/types/user";
 
 // 获取用户列表
 export const useUsers = () => {

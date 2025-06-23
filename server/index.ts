@@ -3,14 +3,17 @@ import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import { createServer } from "http";
 
 import passport from "./middlewares/passport-local";
 import { responseHandler } from "./middlewares/responseHandler";
 import * as config from "./config/index";
 import { DBUtil } from "./utils/db";
+import WebSocketService from "./services/websocketService";
 
 import authRouter from "./routers/auth";
 import userRouter from "./routers/userRouter";
+import chatRouter from "./routers/chatRouter";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
@@ -34,6 +37,13 @@ app.prepare().then(async () => {
   await initializeDatabase();
 
   const server = express();
+  const httpServer = createServer(server);
+
+  // 初始化WebSocket服务
+  const wsService = new WebSocketService(httpServer);
+
+  // 将WebSocket服务添加到全局，供其他模块使用
+  (global as Record<string, unknown>).wsService = wsService;
 
   // express config
   server.use(bodyParser.urlencoded({ extended: true }));
@@ -61,11 +71,12 @@ app.prepare().then(async () => {
   server.use(express.urlencoded({ extended: true }));
   server.use("/api", authRouter);
   server.use("/api", userRouter);
+  server.use("/api/chat", chatRouter);
   server.use((req, res) => {
     return handle(req, res);
   });
 
-  server.listen(port, () => {
+  httpServer.listen(port, () => {
     console.log("server is running on port 3000");
   });
 });

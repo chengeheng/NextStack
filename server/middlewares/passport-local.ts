@@ -2,7 +2,7 @@ import * as config from "@/server/config";
 import { User } from "@/server/models/userModel";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import passport from "passport";
-import { UserRoleType } from "@/types/server/user";
+import { UserRoleType } from "@/types/user";
 
 const opts = {
   // Prepare the extractor from the header.

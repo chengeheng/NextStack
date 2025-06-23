@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { useEffect } from "react";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -16,17 +15,6 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const pathname = usePathname();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (pathname === "/admin/setting") {
-      // Redirect to the first item if on the settings page
-      const firstItem = items[0];
-      if (firstItem) {
-        router.push(firstItem.href);
-      }
-    }
-  }, [pathname, items, router]);
 
   return (
     <nav
