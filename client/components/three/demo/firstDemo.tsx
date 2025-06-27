@@ -1,8 +1,15 @@
 "use client";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-const Main = ({ label, desc }: { label: string; desc: string }) => {
+const FirstDemo = ({ label, desc }: { label: string; desc: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const makeInstance = (
     scene: THREE.Scene,
@@ -104,11 +111,15 @@ const Main = ({ label, desc }: { label: string; desc: string }) => {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col gap-[16px]">
-      <h1>{label}</h1>
-      <p className="text-muted-foreground whitespace-pre">{desc}</p>
-      <canvas ref={canvasRef} className="w-full"></canvas>
-    </div>
+    <Card className="w-full h-full">
+      <CardHeader>
+        <CardTitle>{label}</CardTitle>
+        <CardDescription>{desc}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <canvas ref={canvasRef} className="w-full"></canvas>
+      </CardContent>
+    </Card>
   );
 };
-export default Main;
+export default FirstDemo;

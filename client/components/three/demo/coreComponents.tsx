@@ -1,4 +1,11 @@
 "use client";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { useEffect, useRef, Fragment } from "react";
 import * as THREE from "three";
 import {
@@ -11,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const Main = ({ label, desc }: { label: string; desc: string }) => {
+const CoreComponents = ({ label, desc }: { label: string; desc: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const renderTypes = [
     {
@@ -85,10 +92,12 @@ const Main = ({ label, desc }: { label: string; desc: string }) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col gap-[16px]">
-      <h1>{label}</h1>
-      <p className="text-muted-foreground whitespace-pre">{desc}</p>
-      <div className="flex-1 flex flex-col gap-[16px]">
+    <Card className="w-full h-full">
+      <CardHeader>
+        <CardTitle>{label}</CardTitle>
+        <CardDescription>{desc}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-6">
         <Select onValueChange={handleSelectChange}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a Demo" />
@@ -115,9 +124,9 @@ const Main = ({ label, desc }: { label: string; desc: string }) => {
           </SelectContent>
         </Select>
         <canvas ref={canvasRef} className="w-full"></canvas>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
-export default Main;
+export default CoreComponents;
