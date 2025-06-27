@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import ReduxProvider from "@/client/store/provider";
-import { AdminLayoutClient } from "@/app/admin/adminLayoutClient";
+import { AdminLayoutClient } from "@/client/components/admin/adminLayoutClient";
 
 const title = "Examples";
 const description = "Check out some examples app built using the components.";

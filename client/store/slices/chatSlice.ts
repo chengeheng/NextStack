@@ -5,7 +5,7 @@ import {
   IMessage,
   ICommand,
   CommandType,
-} from "../../../types/chat";
+} from "@/types/chat";
 
 export interface ChatState extends IChatState {
   isConnected: boolean;

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { UserAvatar } from "@/app/admin/userAvatar";
+import { UserAvatar } from "@/client/components/admin/userAvatar";
 
 const examples = [
   {

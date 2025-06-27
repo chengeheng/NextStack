@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 // import { Separator } from "@/registry/new-york/ui/separator";
-import { SidebarNav } from "@/app/admin/setting/sidebarNav";
+import { SidebarNav } from "@/client/components/admin/setting/sidebarNav";
 
 export const metadata: Metadata = {
   title: "Forms",

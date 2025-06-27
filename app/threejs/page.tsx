@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import FirstDemoPage from "@/components/client/three/firstDemo";
-import CoreComponents from "@/components/client/three/coreComponents";
+import FirstDemoPage from "@/client/components/three/firstDemo";
+import CoreComponents from "@/client/components/three/coreComponents";
 
 type DemoComponentProps = {
   label: string;

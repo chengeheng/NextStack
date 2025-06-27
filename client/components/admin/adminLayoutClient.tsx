@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/client/store";
 import { fetchCurrentUser } from "@/client/store/slices/userSlice";
-import { ExamplesNav } from "@/app/admin/appSidebar";
+import { ExamplesNav } from "@/client/components/admin/appSidebar";
 
 interface AdminLayoutClientProps {
   children: React.ReactNode;

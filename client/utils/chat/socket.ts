@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { IMessage, ICommand, IWebSocketMessage } from "../../../types/chat";
+import { IMessage, ICommand, IWebSocketMessage } from "@/types/chat";
 
 export interface SocketEventHandlers {
   onConnect?: () => void;

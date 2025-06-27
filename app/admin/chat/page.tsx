@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/client/store/hooks";
 import { fetchCurrentUser } from "@/client/store/slices/userSlice";
 import { useChat } from "@/client/hooks/useChat";
-import RoomList from "./roomList";
-import ChatArea from "./chatArea";
-import CreateRoomDialog from "./createRoomDialog";
+import RoomList from "@/client/components/admin/chat/roomList";
+import ChatArea from "@/client/components/admin/chat/chatArea";
+import CreateRoomDialog from "@/client/components/admin/chat/createRoomDialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 

@@ -9,7 +9,7 @@ import { MessageCircle, Send, MoreVertical } from "lucide-react";
 import { useChat } from "@/client/hooks/useChat";
 import { useAppSelector } from "@/client/store/hooks";
 import { IMessage } from "@/types/chat";
-import MembersSheet from "./membersSheet";
+import MembersSheet from "@/client/components/admin/chat/membersSheet";
 
 const ChatArea: React.FC = () => {
   const { currentRoom, messages, typingUsers, sendMessage, handleTyping } =

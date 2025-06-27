@@ -4,7 +4,7 @@ import axios, {
   AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
-// import { getAccessTokenInCookie } from "./cookieUtils";
+// import { getAccessTokenInCookie } from "@/client/utils/cookieUtils";
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   retries?: number;

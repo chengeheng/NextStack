@@ -18,7 +18,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Textarea } from "../../../components/ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { RoomType } from "@/types/chat";
 import { useAppDispatch } from "@/client/store/hooks";
 import { createRoom } from "@/client/store/slices/chatSlice";

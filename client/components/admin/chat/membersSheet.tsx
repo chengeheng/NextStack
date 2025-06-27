@@ -14,7 +14,7 @@ import {
 import { Users, UserPlus, Crown, Shield } from "lucide-react";
 import { useAppSelector } from "@/client/store/hooks";
 import { IRoom, UserRole } from "@/types/chat";
-import InviteMembersDialog from "./inviteMembersDialog";
+import InviteMembersDialog from "@/client/components/admin/chat/inviteMembersDialog";
 
 interface MembersSheetProps {
   room: IRoom;
