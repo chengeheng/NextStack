@@ -34,18 +34,20 @@ const ThreeDemoPanel = ({ mainDemo, subDemo }: Props) => {
   const desc = subDemo?.desc || mainDemo.desc;
 
   return (
-    <div className="h-full">
+    <div className="flex flex-col">
       {DemoCmp ? (
-        <DemoCmp label={label} desc={desc} />
+        <div className="flex-1 min-h-0">
+          <DemoCmp label={label} desc={desc} />
+        </div>
       ) : (
-        <Card className="h-full">
-          <CardHeader>
+        <Card className="flex flex-col">
+          <CardHeader className="flex-shrink-0">
             <CardTitle>{label}</CardTitle>
             <CardDescription>{desc}</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1 p-0">
-            <div className="h-full p-6">
-              <div className="flex items-center justify-center h-full text-muted-foreground">
+          <CardContent className="flex-1 p-0 min-h-0">
+            <div className="p-6">
+              <div className="flex items-center justify-center text-muted-foreground">
                 {label} 的演示示例将在这里显示
               </div>
             </div>

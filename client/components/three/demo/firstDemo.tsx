@@ -111,13 +111,13 @@ const FirstDemo = ({ label, desc }: { label: string; desc: string }) => {
   }, []);
 
   return (
-    <Card className="w-full h-full">
-      <CardHeader>
+    <Card className="w-full h-full flex flex-col">
+      <CardHeader className="flex-shrink-0">
         <CardTitle>{label}</CardTitle>
         <CardDescription>{desc}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <canvas ref={canvasRef} className="w-full"></canvas>
+      <CardContent className="flex-1 px-6 min-h-0">
+        <canvas ref={canvasRef} className="w-[600px] h-[400px]"></canvas>
       </CardContent>
     </Card>
   );

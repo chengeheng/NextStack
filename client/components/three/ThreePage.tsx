@@ -35,6 +35,7 @@ const ThreePage = () => {
     useState<string>("first-demo");
   const [selectedSubDemo, setSelectedSubDemo] = useState<string | null>(null);
   const [isInSubMenu, setIsInSubMenu] = useState(false);
+  const [lastSubDemo, setLastSubDemo] = useState<string | null>(null);
 
   const demos: MainDemo[] = [
     {
@@ -287,10 +288,19 @@ const ThreePage = () => {
   const handleMainDemoChange = (value: string) => {
     const demo = demos.find((d) => d.key === value);
     if (demo?.subDemos && demo.subDemos.length > 0) {
-      // 如果有子菜单，切换到子菜单并默认选中第一个
+      // 如果有子菜单，切换到子菜单
       setSelectedMainDemo(value);
-      setSelectedSubDemo(demo.subDemos[0].key);
-      setIsInSubMenu(true);
+
+      // 如果是从子菜单返回，并且点击的是同一个父级菜单，恢复之前的子菜单选择
+      if (value === selectedMainDemo && lastSubDemo) {
+        setSelectedSubDemo(lastSubDemo);
+        setIsInSubMenu(true);
+      } else {
+        // 否则默认选中第一个子菜单
+        setSelectedSubDemo(demo.subDemos[0].key);
+        setLastSubDemo(demo.subDemos[0].key);
+        setIsInSubMenu(true);
+      }
     } else {
       // 如果没有子菜单，直接显示主demo
       setSelectedMainDemo(value);
@@ -301,6 +311,7 @@ const ThreePage = () => {
 
   const handleSubDemoChange = (value: string) => {
     setSelectedSubDemo(value);
+    setLastSubDemo(value);
   };
 
   const handleBack = () => {
@@ -308,74 +319,49 @@ const ThreePage = () => {
     setSelectedSubDemo(null);
   };
 
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 50 : -50,
-      opacity: 0,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 50 : -50,
-      opacity: 0,
-    }),
-  };
-
   return (
-    <div className="w-full h-full flex flex-col gap-6 p-6">
+    <div className="w-full flex flex-col gap-6 p-6">
       <ThreeHeader />
       <Separator />
 
-      <div className="flex-1 flex gap-6 min-h-0">
+      <div className="flex-1 flex gap-6">
         <div className="w-80 flex-shrink-0 overflow-hidden">
-          <AnimatePresence mode="wait">
-            {!isInSubMenu ? (
-              <motion.div
-                key="main-list"
-                custom={1}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  x: { type: "spring", stiffness: 400, damping: 40 },
-                  opacity: { duration: 0.15 },
-                }}
-                className="w-full"
-              >
+          <div className="relative flex">
+            {/* 主菜单 - 始终在左侧 */}
+            <motion.div
+              className="inset-0 flex gap-[6px]"
+              animate={{
+                x: isInSubMenu ? "calc(-50% - 3px)" : "0%",
+                // 或者使用精确的像素值：x: isInSubMenu ? "-403px" : "0px" (320px + 3px)
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+              }}
+            >
+              <div className="w-80">
                 <ThreeMainList
                   demos={demos}
                   selected={selectedMainDemo}
                   onSelect={handleMainDemoChange}
                 />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="sub-list"
-                custom={-1}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  x: { type: "spring", stiffness: 400, damping: 40 },
-                  opacity: { duration: 0.15 },
-                }}
-                className="w-full"
-              >
-                <ThreeSubList
-                  subDemos={selectedDemo?.subDemos || []}
-                  selected={selectedSubDemo || ""}
-                  onSelect={handleSubDemoChange}
-                  onBack={handleBack}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
+              <div className="w-80">
+                {hasSubDemos ? (
+                  <ThreeSubList
+                    subDemos={selectedDemo?.subDemos || []}
+                    selected={selectedSubDemo || ""}
+                    onSelect={handleSubDemoChange}
+                    onBack={handleBack}
+                  />
+                ) : (
+                  // 占位内容，确保动画正常工作
+                  <div className="w-full bg-background" />
+                )}
+              </div>
+            </motion.div>
+          </div>
         </div>
 
         <div className="flex-1">

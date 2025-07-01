@@ -92,38 +92,42 @@ const CoreComponents = ({ label, desc }: { label: string; desc: string }) => {
   };
 
   return (
-    <Card className="w-full h-full">
-      <CardHeader>
+    <Card className="w-full h-full flex flex-col">
+      <CardHeader className="flex-shrink-0">
         <CardTitle>{label}</CardTitle>
         <CardDescription>{desc}</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6">
-        <Select onValueChange={handleSelectChange}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select a Demo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {renderTypes.map((type) => {
-                const { label, key, demos } = type;
-                return (
-                  <Fragment key={key}>
-                    <SelectLabel>{label}</SelectLabel>
-                    {demos.map((demo) => {
-                      const { label, key } = demo;
-                      return (
-                        <SelectItem key={key} value={key}>
-                          {label}
-                        </SelectItem>
-                      );
-                    })}
-                  </Fragment>
-                );
-              })}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <canvas ref={canvasRef} className="w-full"></canvas>
+      <CardContent className="flex-1 p-6 flex flex-col gap-6 min-h-0">
+        <div className="flex-shrink-0">
+          <Select onValueChange={handleSelectChange}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select a Demo" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {renderTypes.map((type) => {
+                  const { label, key, demos } = type;
+                  return (
+                    <Fragment key={key}>
+                      <SelectLabel>{label}</SelectLabel>
+                      {demos.map((demo) => {
+                        const { label, key } = demo;
+                        return (
+                          <SelectItem key={key} value={key}>
+                            {label}
+                          </SelectItem>
+                        );
+                      })}
+                    </Fragment>
+                  );
+                })}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex-1 min-h-0">
+          <canvas ref={canvasRef} className="w-full h-full"></canvas>
+        </div>
       </CardContent>
     </Card>
   );
