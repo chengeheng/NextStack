@@ -7,7 +7,7 @@ import ThreeMainList from "./ThreeMainList";
 import ThreeSubList from "./ThreeSubList";
 import ThreeDemoPanel from "./ThreeDemoPanel";
 import FirstDemo from "./demo/firstDemo";
-import CoreComponents from "./demo/coreComponents";
+import CoreComponents from "./demo/CoreComponents";
 
 type DemoComponentProps = {
   label: string;
@@ -50,33 +50,33 @@ const ThreePage = () => {
       label: "Core Components",
       desc: "Three.js 核心组件：场景、相机、渲染器等",
       category: "基础组件",
-      subDemos: [
-        {
-          key: "scene",
-          label: "Scene（场景）",
-          desc: "所有物体的容器，管理3D世界中的所有对象",
-        },
-        {
-          key: "camera",
-          label: "Camera（相机）",
-          desc: "透视相机（PerspectiveCamera）和正交相机（OrthographicCamera）",
-        },
-        {
-          key: "renderer",
-          label: "Renderer（渲染器）",
-          desc: "WebGLRenderer 是核心渲染引擎",
-        },
-        {
-          key: "geometry",
-          label: "Geometry（几何体）",
-          desc: "BoxGeometry、SphereGeometry、CylinderGeometry 等",
-        },
-        {
-          key: "material",
-          label: "Material（材质）",
-          desc: "MeshBasicMaterial、MeshPhongMaterial、MeshStandardMaterial 等",
-        },
-      ],
+      // subDemos: [
+      //   {
+      //     key: "scene",
+      //     label: "Scene（场景）",
+      //     desc: "所有物体的容器，管理3D世界中的所有对象",
+      //   },
+      //   {
+      //     key: "camera",
+      //     label: "Camera（相机）",
+      //     desc: "透视相机（PerspectiveCamera）和正交相机（OrthographicCamera）",
+      //   },
+      //   {
+      //     key: "renderer",
+      //     label: "Renderer（渲染器）",
+      //     desc: "WebGLRenderer 是核心渲染引擎",
+      //   },
+      //   {
+      //     key: "geometry",
+      //     label: "Geometry（几何体）",
+      //     desc: "BoxGeometry、SphereGeometry、CylinderGeometry 等",
+      //   },
+      //   {
+      //     key: "material",
+      //     label: "Material（材质）",
+      //     desc: "MeshBasicMaterial、MeshPhongMaterial、MeshStandardMaterial 等",
+      //   },
+      // ],
       Cmp: CoreComponents as React.ComponentType<DemoComponentProps>,
     },
     {
